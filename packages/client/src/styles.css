@@ -1,0 +1,271 @@
+html {
+  /* background-color: #f3f3f3; */
+  background: linear-gradient(0deg, white, #f3f3f3);
+  color: gray;
+  font-family: 'Nunito', sans-serif;
+  min-height: 100%;
+}
+
+nav {
+  background: #217763;
+  /* box-shadow: 0px 0px 5px rgba(0,0,0,0.5); */
+  padding: 15px 40px;
+  display: fixed;
+}
+
+nav ul {
+  display: flex;
+  list-style-type: none;
+}
+
+nav ul li {
+  margin-right: 15px;
+}
+
+a {
+  color: white;
+}
+
+#page-layout {
+  padding: 40px;
+}
+
+#story-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.story {
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding: 20px;
+  transition: all 0.1s;
+  width: 100%;
+}
+
+.story:hover {
+  background: white;
+  /* transform: translate(-4px, -0px); */
+  transform: scale(1.02);
+}
+
+.story:hover .story-title {
+  color: black;
+}
+
+.story-icon-circle {
+  align-items: center;
+  background: #e0baaf;
+  border-radius: 50%;
+  display: flex;
+  flex-shrink: 0;
+  height: 60px;
+  justify-content: center;
+  margin-right: 15px;
+  width: 60px;
+}
+
+.story-icon {
+  color: #9e5e5e;
+  font-size: 24px;
+}
+
+.story-main-info {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.story-meta-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.story-attribution {
+  font-size: 12px;
+}
+
+.story-author {
+  font-weight: 700;
+  font-size: 12px;
+  color: #484848;
+}
+
+.story-title {
+  color:#424242;
+  font-size: 16px;
+  line-height: 1em;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.story-description {
+  color: #ababab;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+#story-container {
+  padding: 20px;
+  top: 40px;
+}
+
+.story-divider {
+  border-bottom: 1px solid #e4e4e4;
+  margin-bottom: 15px;
+  width: 75%;
+}
+
+h1 {
+  margin-bottom: 0.5em;
+  font-size: 24px;
+}
+
+h2 {
+  margin-bottom: 0.5em;
+  font-size: 18px;
+  color: #636363;
+}
+
+.entry {
+  margin-bottom: 1em;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #94a9a2;
+  
+}
+
+.self-entry {
+  background: linear-gradient(345deg, #bcd4ce, #d4e6f3);
+  border-radius: 5px;
+  color: #2d6f69;
+  padding: 10px;
+}
+
+.self-entry .timestamp {
+  color: #549292;
+}
+
+.self-entry-icon {
+  font-size: 0.8em;
+  margin-right: 5px;
+}
+
+#entrypad {
+  align-items: center;
+  background: #ececec;
+  bottom: 0;
+  display: flex;
+  left: 0;
+  padding: 1em;
+  position: fixed;
+  width: 100%;
+}
+
+#entrypad #input-field-wrapper {
+  flex: 1;
+  margin-right: 20px;
+  position: relative;
+}
+
+#input-field-clear-button {
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  bottom: 0;
+  cursor: pointer;
+  display: none;
+  justify-content: center;
+  margin-right: 5px;
+  outline: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20px;
+}
+
+#input-field-clear-button.visible {
+  display: flex;
+}
+
+#input-field-clear-button i {
+  color: #929292;
+}
+
+#input-field-clear-button:hover i {
+  color: black;
+}
+
+#entrypad #input-field {
+  background: none;
+  border: 2px solid #d6d6d6;
+  border-width: 0px 0px 2px 0px;
+  outline: none;
+  padding: 2px;
+  width: 100%;
+}
+
+#entrypad #input-field:focus {
+  border-color: #36adaf;
+}
+
+#entrypad #submit-button {
+  align-items: center;
+  background: #a7a7a7;
+  border: 0;
+  border-radius: 50%;
+  display: flex;
+  height: 45px;
+  justify-content: center;
+  outline: none;
+  transform: scale(0.9);
+  transition: all 0.1s;
+  width: 45px;
+}
+
+#entrypad #submit-button.active {
+  background: linear-gradient(45deg, #36a0bf, #36bf99);
+  cursor: pointer;
+  transform: scale(1);
+}
+
+#entrypad #submit-button.active:hover {
+  transform: scale(1.1);
+}
+
+#entrypad #submit-button #submit-button-icon{
+  color: white;
+  font-size: 24px;
+}
+
+#new-story-button {
+  background: linear-gradient(45deg, #36a0bf, #36bf99);
+  bottom: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 60px;
+  margin-bottom: 30px;
+  margin-right: 40px;
+  outline: none;
+  position: absolute;
+  width: 60px;
+  right: 0;
+  transition: all 0.1s;
+}
+
+#new-story-button:hover {
+  transform: scale(1.1);
+}
+
+#new-story-button i {
+  color: white;
+  font-size: 24px;
+}
