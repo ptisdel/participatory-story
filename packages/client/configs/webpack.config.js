@@ -4,11 +4,12 @@ const dotenv = require('dotenv');
 dotenv.config();
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+// const WebpackPwaManifest = require('webpack-pwa-manifest')
+const CopyPlugin = require('copy-webpack-plugin');
 
 const buildDir = path.join(__dirname, '../build');
-const srcDir = path.join(__dirname, 'src');
+const srcDir = path.join(__dirname, '../src');
 const srcIndex = path.join(__dirname, '../src/index.html');
-
 module.exports = {
   devtool: 'inline-source-map',
   module: {
@@ -45,10 +46,11 @@ module.exports = {
       },
     },
   },
+  // entry: srcDir,
   output: {
-    path: buildDir,
-    filename: '[name].js',
     chunkFilename: '[name].[chunkhash].js',
+    filename: '[name].js',
+    path: buildDir,
   },
   plugins: [
     new webpack.EnvironmentPlugin([
@@ -61,22 +63,36 @@ module.exports = {
       'REACT_APP_FIREBASE_APP_ID',
       'REACT_APP_FIREBASE_VAPID_KEY',
     ]),
+    new CopyPlugin({
+      patterns: [
+        { from: 'src/public', to: './' },
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: srcIndex,
     }),
+    // new WebpackPwaManifest({
+    //   filename: 'manifest.json',
+    //   name: 'My Progressive Web App',
+    //   short_name: 'MyPWA',
+    //   description: 'My awesome Progressive Web App!',
+    //   background_color: '#ffffff',
+    //   crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
+    //   icons: [],
+    // }),
     new WorkboxPlugin.GenerateSW({
-      // these options encourage the ServiceWorkers to get in there fast
-      // and not allow any straggling "old" SWs to hang around
       clientsClaim: true,
       skipWaiting: true,
     }),
   ],
   devServer: {
-    compress: true,
-    contentBase: srcDir,
+    contentBase: buildDir,
     historyApiFallback: true,
+    compress: true,
     hot: true,
+    inline: true,
     open: true,
     port: 8002,
+    writeToDisk: true,
   },
 };

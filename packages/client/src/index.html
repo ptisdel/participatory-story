@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>Interactive Story Client</title>
     <script src="https://kit.fontawesome.com/af6ab26dc3.js" crossorigin="anonymous"></script>
     <!-- <link rel="manifest" href="./manifest.webapp"> -->
-</head>
-<body>
-<div id="root"></div>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('./sw.js').then(function(registration) {
-        // Registration was successful
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function(err) {
-        // registration failed :(
-        console.log('ServiceWorker registration failed: ', err);
-      }).catch(function(err) {
-        alert(err);
-        console.log(err)
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').then(registration => {
+          console.log('SW registered: ', registration);
+        }).catch(registrationError => {
+          console.log('SW registration failed: ', registrationError);
+        });
       });
-    });
-  } else {
-    console.log('service worker is not supported');
-  }
-</script>
-</body>
+    }
+    </script>
+  </body>
+  <noscript>Your browser does not support JavaScript!</noscript>
 </html>

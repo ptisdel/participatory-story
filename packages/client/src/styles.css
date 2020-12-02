@@ -27,7 +27,7 @@ a {
 }
 
 #page-layout {
-  padding: 40px;
+  padding: 20px;
 }
 
 #story-list {
@@ -37,12 +37,12 @@ a {
 }
 
 .story {
-  border-radius: 15px;
+  border-radius: 10px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-  padding: 20px;
+  padding: 22px 18px;
   transition: all 0.1s;
   width: 100%;
 }
@@ -63,15 +63,15 @@ a {
   border-radius: 50%;
   display: flex;
   flex-shrink: 0;
-  height: 60px;
+  height: 30px;
   justify-content: center;
   margin-right: 15px;
-  width: 60px;
+  width: 30px;
 }
 
 .story-icon {
   color: #9e5e5e;
-  font-size: 24px;
+  font-size: 12px;
 }
 
 .story-main-info {
@@ -84,6 +84,7 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-right: 5px;
 }
 
 .story-attribution {
@@ -98,7 +99,7 @@ a {
 
 .story-title {
   color:#424242;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 1em;
   font-weight: 800;
   margin-bottom: 5px;
@@ -106,7 +107,7 @@ a {
 
 .story-description {
   color: #ababab;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
 }
 
@@ -118,7 +119,7 @@ a {
 .story-divider {
   border-bottom: 1px solid #e4e4e4;
   margin-bottom: 15px;
-  width: 75%;
+  width: 100%;
 }
 
 h1 {

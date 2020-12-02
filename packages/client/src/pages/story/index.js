@@ -6,10 +6,11 @@ import { useStory } from './logic';
 
 export const StoryPage = () => {
   const [{
-    storyAuthorId,
     error,
     inputValue,
+    isSubscribedToNotifications,
     story,
+    storyAuthorId,
     userId
   }, {
     onClear, 
@@ -53,13 +54,14 @@ export const StoryPage = () => {
 
   return (
     <div id='story-container'>
+      { isSubscribedToNotifications ? 'yes' : 'no'}
       { _.map(story, (section, sectionKey) => renderSection(section, sectionKey)) }
       { error ? <p id='error'>{error}</p> : null }
       <form id='entrypad' onSubmit={onSubmit}>
         <div id='input-field-wrapper'>
           <input id='input-field' placeholder='Type your request here' onChange={onInputValueChange} value={inputValue} ></input>
           <button className={ (inputValue !== '') ? 'visible' : ''} id='input-field-clear-button' onClick={onClear}>
-            <i class="fas fa-times"></i>
+            <i className="fas fa-times"></i>
           </button>
         </div>
         <button className={ (inputValue !== '') ? 'active' : ''} id='submit-button' type='submit'>  

@@ -14,11 +14,11 @@
     "@babel/plugin-transform-runtime",
     "@babel/plugin-proposal-optional-chaining",
     "@babel/plugin-syntax-dynamic-import",
-    [
-      "babel-plugin-styled-components",
-      {
-        "fileName": true
-      }
-    ]
+    // [
+    //   "babel-plugin-styled-components",
+    //   {
+    //     "fileName": true
+    //   }
+    // ]
   ]
 }

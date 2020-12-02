@@ -11,6 +11,7 @@ export const useStory = () => {
   const [story, setStory] = useState([]);
   const [storyAuthorId, setStoryAuthorId] = useState(null);
   const [currentSection, setCurrentSection] = useState(null);
+  const [isSubscribedToNotifications, setIsSubscribedToNotifications] = useState(false);
   const userId = getUserId();
 
   const updateStory = ({ authorId, currentSection, sections,}) => {
@@ -19,10 +20,18 @@ export const useStory = () => {
     setStoryAuthorId(authorId);
   }
 
+  const onSubscribeToNotifications = ({ didSucceed }) => {
+    setIsSubscribedToNotifications(didSucceed);
+  }
+
   useEffect(() => {
     if (storyId === null) return;
 
-    const { unsubscribe } = subscribeToStoryChanges({ storyId, onUpdate: updateStory })
+    const { unsubscribe } = subscribeToStoryChanges({
+      storyId,
+      onUpdate: updateStory,
+      onSubscribeToNotifications,
+    });
 
     return unsubscribe;
   }, [storyId]);
@@ -53,6 +62,7 @@ export const useStory = () => {
   return [{
     error,
     inputValue,
+    isSubscribedToNotifications,
     story,
     storyAuthorId,
     userId,

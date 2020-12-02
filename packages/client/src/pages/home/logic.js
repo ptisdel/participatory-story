@@ -1,14 +1,15 @@
-import { getIsAuthenticated } from '../../helpers';
+import { getIsAuthenticated, getUserId } from '../../helpers';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { onStoryListUpdate, cleanUpStoryListUpdate } from '../../services/firebase';
+import { registerStoryListUpdates, cleanUpStoryListUpdate, registerUserForNotifications } from '../../services/firebase';
 
 export const useHomePage = () => {
   const history = useHistory();
   const [stories, setStories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    onStoryListUpdate((stories) => setStories(stories));  
+    registerStoryListUpdates((stories) => setStories(stories));
     return cleanUpStoryListUpdate;
   }, []);
 

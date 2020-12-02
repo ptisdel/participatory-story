@@ -1,5 +1,6 @@
 import _ from 'lodash-es';
 import firebase from 'firebase';
+import { getUserId } from '../helpers';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -13,19 +14,20 @@ const firebaseConfig = {
 
 // initialize firebase
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth;
+const auth = firebase.auth();
 const db = firebase.database();  
 
+
 // authentication helpers
-export const createUser = ({ email, password }) => auth().createUserWithEmailAndPassword(email, password);
-export const signIn = ({ email, password }) => auth().signInWithEmailAndPassword(email, password);
-export const signOut = () => auth().signOut();
-export const onAuthChanged = (callback) => auth().onAuthStateChanged(callback);
-export const getUser = () => auth().currentUser;
+export const createUser = ({ email, password }) => auth.createUserWithEmailAndPassword(email, password);
+export const signIn = ({ email, password }) => auth.signInWithEmailAndPassword(email, password);
+export const signOut = () => auth.signOut();
+export const onAuthChanged = (callback) => auth.onAuthStateChanged(callback);
+export const getUser = () => auth.currentUser;
 
 // read story list
 const pathToStoriesList = 'stories';
-export const onStoryListUpdate = (callback) => db.ref(pathToStoriesList).on('value', (snapShot) => {
+export const registerStoryListUpdates = (callback) => db.ref(pathToStoriesList).on('value', (snapShot) => {
   const storyData = snapShot.val();
 
   const storiesFormatted = _.map(storyData, (story, key) => ({
@@ -49,8 +51,8 @@ export const onStoryListUpdate = (callback) => db.ref(pathToStoriesList).on('val
 });
 export const cleanUpStoryListUpdate = () => db.ref(pathToStoriesList).off();
 
-// read story
-export const subscribeToStoryChanges = ({ storyId, onUpdate }) => {
+// download any story updates and notify user of them
+export const subscribeToStoryChanges = ({ storyId, onSubscribeToNotifications, onUpdate }) => {
   const pathToStory =  `${pathToStoriesList}/${storyId}`;
 
   db.ref(pathToStory).on('value', (snapShot) => {
@@ -66,15 +68,18 @@ export const subscribeToStoryChanges = ({ storyId, onUpdate }) => {
     });
   });
 
+  addDeviceToNotificationsList({ onSubscribeToNotifications, storyId });
+
   return {
     unsubscribe: () => db.ref(pathToStory).off(),
+    
   };
 };
 
 // write to story
 export const submitRequest = ({ currentSection, storyId, text }) => {
   const pathToCurrentSection = `${pathToStoriesList}/${storyId}/sections/${currentSection}/entries`;
-  return db.ref(pathToCurrentSection).push({
+  db.ref(pathToCurrentSection).push({
     text: text,
     timestamp: Date.now(),
     author: getUser().uid,
@@ -85,19 +90,24 @@ export const submitRequest = ({ currentSection, storyId, text }) => {
 const messaging = firebase.messaging();
 const vapidKey = process.env.REACT_APP_FIREBASE_VAPID_KEY;
 
-messaging.getToken({ vapidKey }).then((currentToken) => {
-  if (currentToken) {
-    sendTokenToServer(currentToken);
-    updateUIForPushEnabled(currentToken);
-  } else {
-    // Show permission request.
-    console.log('No registration token available. Request permission to generate one.');
-    // Show permission UI.
-    updateUIForPushPermissionRequired();
-    setTokenSentToServer(false);
-  }
-}).catch((err) => {
-  console.log('An error occurred while retrieving token. ', err);
-  showToken('Error retrieving registration token. ', err);
-  setTokenSentToServer(false);
-});
+function addDeviceToNotificationsList({ onSubscribeToNotifications, storyId }) {
+  messaging.getToken({ vapidKey })
+    .then(token => {
+      if (!token) {
+        console.log('No registration token available. Request permission to generate one.');
+        onSubscribeToNotifications({ didSucceed: false });
+        return;
+      }
+      
+      // save token to database
+      db.ref(`${pathToStoriesList}/${storyId}/notificationTokens`).push({
+        userId: getUser().uid,
+        token,
+      });
+      onSubscribeToNotifications({ didSucceed: true });
+    })
+    .catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
+      onSubscribeToNotifications({ didSucceed: false });
+    });
+}
