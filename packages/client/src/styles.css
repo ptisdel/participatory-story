@@ -1,14 +1,32 @@
+/* GLOBAL STYLES */
+
 html {
-  /* background-color: #f3f3f3; */
   background: linear-gradient(0deg, white, #f3f3f3);
   color: gray;
   font-family: 'Nunito', sans-serif;
   min-height: 100%;
 }
 
+h1 {
+  margin-bottom: 0.5em;
+  font-size: 24px;
+}
+
+h2 {
+  margin-bottom: 0.5em;
+  font-size: 18px;
+  color: #636363;
+}
+
+a {
+  color: white;
+}
+
+
+/* APP STYLES */
+
 nav {
   background: #217763;
-  /* box-shadow: 0px 0px 5px rgba(0,0,0,0.5); */
   padding: 15px 40px;
   display: fixed;
 }
@@ -22,13 +40,11 @@ nav ul li {
   margin-right: 15px;
 }
 
-a {
-  color: white;
-}
-
 #page-layout {
   padding: 20px;
 }
+
+/* HOME PAGE STYLES */
 
 #story-list {
   display: flex;
@@ -122,16 +138,34 @@ a {
   width: 100%;
 }
 
-h1 {
-  margin-bottom: 0.5em;
+
+#new-story-button {
+  background: linear-gradient(45deg, #36a0bf, #36bf99);
+  bottom: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 60px;
+  margin-bottom: 30px;
+  margin-right: 40px;
+  outline: none;
+  position: absolute;
+  width: 60px;
+  right: 0;
+  transition: all 0.1s;
+}
+
+#new-story-button:hover {
+  transform: scale(1.1);
+}
+
+#new-story-button i {
+  color: white;
   font-size: 24px;
 }
 
-h2 {
-  margin-bottom: 0.5em;
-  font-size: 18px;
-  color: #636363;
-}
+
+/* STORY STYLES */
 
 .entry {
   margin-bottom: 1em;
@@ -246,27 +280,80 @@ h2 {
   font-size: 24px;
 }
 
-#new-story-button {
-  background: linear-gradient(45deg, #36a0bf, #36bf99);
-  bottom: 0;
-  border: none;
+
+/* CREATE STORY STYLES */
+
+#player-count-options {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.player-count-option {
+  align-items: center;
   border-radius: 50%;
+  border: 2px solid gray;
+  display: flex;
+  font-weight: bold;
+  height: 30px;
+  line-height: 1em;
+  justify-content: center;
+  margin-right: 10px;
+  width: 30px;
   cursor: pointer;
-  height: 60px;
-  margin-bottom: 30px;
-  margin-right: 40px;
-  outline: none;
-  position: absolute;
-  width: 60px;
-  right: 0;
-  transition: all 0.1s;
 }
 
-#new-story-button:hover {
-  transform: scale(1.1);
+#player-count-options-label {
+  margin-right: 10px;
 }
 
-#new-story-button i {
+.player-count-option:hover {
+  background: lightgray;
+}
+
+.player-count-option.selected {
+  background: gray;
   color: white;
-  font-size: 24px;
+}
+
+.player-count-option.selected:hover {
+  background: lightgray;
+}
+
+
+/* FORM CARD STYLES */
+
+.form-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 400px;
+}
+
+.form-card h1 {
+  color: #057f6a;
+  line-height: 1em;
+  margin-bottom: 20px;
+}
+
+.form-card input {
+  background: #e8e8e8;
+  border: 0;
+  border-radius: 3px;
+  display: block;
+  line-height: 1em;
+  margin-bottom: 20px;
+  padding: 4px;
+  width: 100%;
+}
+
+.form-card button {
+  background: linear-gradient(45deg, #36a0bf, #36bf99);
+  border-radius: 5px;
+  border: 0;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 7px 10px;
 }

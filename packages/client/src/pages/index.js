@@ -1,5 +1,6 @@
+export { CreateStoryPage } from './create-story';
+export { HomePage } from './home';
 export { LoginPage } from './login';
-export { StoryPage } from './story';
 export { PageNotFound } from './page-not-found';
 export { RegisterPage } from './register';
-export { HomePage } from './home';
+export { StoryPage } from './story';

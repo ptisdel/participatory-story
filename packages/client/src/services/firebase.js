@@ -1,6 +1,5 @@
 import _ from 'lodash-es';
 import firebase from 'firebase';
-import { getUserId } from '../helpers';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -12,11 +11,13 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
+// TODO: Move all of this behind a server
+
 // initialize firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();  
-
+const pathToStoriesList = 'stories';
 
 // authentication helpers
 export const createUser = ({ email, password }) => auth.createUserWithEmailAndPassword(email, password);
@@ -25,8 +26,23 @@ export const signOut = () => auth.signOut();
 export const onAuthChanged = (callback) => auth.onAuthStateChanged(callback);
 export const getUser = () => auth.currentUser;
 
+// create story
+export const createStory = ({ callback, name, description, playerCount }) => {
+  db.ref(pathToStoriesList).push({
+    author: {
+      id: getUser().uid,
+      displayName: getUser().displayName,
+    },
+    createdAt: Date.now(),
+    currentSection: 0,
+    description,
+    maxPlayerCount: playerCount,
+    name,
+    open: true,
+  }).then(snap => callback({ storyId: snap.key }));
+};
+
 // read story list
-const pathToStoriesList = 'stories';
 export const registerStoryListUpdates = (callback) => db.ref(pathToStoriesList).on('value', (snapShot) => {
   const storyData = snapShot.val();
 
@@ -72,12 +88,11 @@ export const subscribeToStoryChanges = ({ storyId, onSubscribeToNotifications, o
 
   return {
     unsubscribe: () => db.ref(pathToStory).off(),
-    
   };
 };
 
 // write to story
-export const submitRequest = ({ currentSection, storyId, text }) => {
+export const submitRequest = ({ callback, currentSection, storyId, text }) => {
   const pathToCurrentSection = `${pathToStoriesList}/${storyId}/sections/${currentSection}/entries`;
   db.ref(pathToCurrentSection).push({
     text: text,

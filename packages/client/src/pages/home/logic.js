@@ -14,7 +14,7 @@ export const useHomePage = () => {
   }, []);
 
   const onCreateStory = () => {
-    // TODO: add functionality
+    history.push('/create-story');
   };
 
   const onLogIn = () => {

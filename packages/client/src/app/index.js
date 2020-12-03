@@ -6,19 +6,23 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
-import { HomePage, LoginPage, PageNotFound, RegisterPage, StoryPage } from '../pages';
+import { CreateStoryPage, HomePage, LoginPage, PageNotFound, RegisterPage, StoryPage } from '../pages';
 import { useApp } from './logic';
 
 export const App = () => {
   const [{ isAuthenticated }, { logOut }] = useApp();
 
   const AuthenticatedLinks = () => {
+    if (!isAuthenticated) return null;
+
     return <>
       <li><a href='' onClick={logOut}>Log Out</a></li>
     </>;
   }
 
   const UnauthenticatedLinks = () => {
+    if (isAuthenticated) return null;
+
     return <>
       <li><Link to='/login'>Login</Link></li>
       <li><Link to='/register'>Register</Link></li>
@@ -30,8 +34,8 @@ export const App = () => {
       <nav>
         <ul>
           <li><Link to='/'>Home</Link></li>
-          { !isAuthenticated && <UnauthenticatedLinks/> }
-          { isAuthenticated && <AuthenticatedLinks/> }
+          <UnauthenticatedLinks/>
+          <AuthenticatedLinks/>
         </ul>
       </nav>
       <Switch>        
@@ -46,6 +50,9 @@ export const App = () => {
         </Route>
         <Route path='/story/:storyId'>
           <PrivatePage isAuthenticated={isAuthenticated}><StoryPage/></PrivatePage>
+        </Route>
+        <Route path='/create-story'>
+          <PrivatePage isAuthenticated={isAuthenticated}><CreateStoryPage/></PrivatePage>
         </Route>
         <Route path="*">
           <PageNotFound/>
