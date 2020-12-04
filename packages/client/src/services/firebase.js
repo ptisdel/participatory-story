@@ -97,7 +97,7 @@ export const submitRequest = ({ callback, currentSection, storyId, text }) => {
   db.ref(pathToCurrentSection).push({
     text: text,
     timestamp: Date.now(),
-    author: getUser().uid,
+    authorId: getUser().uid,
   });
 };
 

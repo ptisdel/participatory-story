@@ -19,10 +19,10 @@ export const StoryPage = () => {
   }] = useStory();
 
   const renderEntry = (entry, entryKey) => {
-    const { author, timestamp, text } = entry;
+    const { authorId, timestamp, text } = entry;
 
-    const isSelfEntry = author === userId;
-    const isStoryEntry = author === storyAuthorId;
+    const isSelfEntry = authorId === userId;
+    const isStoryEntry = authorId === storyAuthorId;
 
     const timestampFormatted = moment(timestamp).fromNow();
 
