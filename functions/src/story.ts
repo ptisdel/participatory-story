@@ -1,4 +1,4 @@
-import _ from 'lodash-es';
+import _ from 'lodash';
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
@@ -6,18 +6,20 @@ admin.initializeApp();
 
 export const notifyOnNewEntry = functions.database
   .ref('/stories/{storyId}/sections/{sectionId}/entries/{entryId}')
-  .onCreate((snapshot, context) => {
+  .onCreate(async (snapshot, context) => {
+
+    const storyId = context.params.storyId;
 
     // create notification payload
     const { authorId, text } = snapshot.val(); // the created entry object
     const storyName = await admin.database()
-          .ref(`/stories/${context.params.storyId}/name`)
+          .ref(`/stories/${storyId}/name`)
           .once('value');
     const payload = {
       notification: {
         title: `New update for ${storyName}`,
         body: text,
-        icon: null, // TODO: add icon url
+        // TODO: add icon url
       }
     };
 
@@ -30,7 +32,7 @@ export const notifyOnNewEntry = functions.database
 
       if (authorId === userId) return acc;
       return [...acc, token];
-    }, []);
+    }, [] as any);
 
     await admin.messaging().sendToDevice(notificationTokens, payload);
   })
