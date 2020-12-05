@@ -2,3 +2,5 @@ node_modules
 build/
 .env
 yarn-error.log
+configs/config.json
+configs/dev.config.json

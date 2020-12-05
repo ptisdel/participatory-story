@@ -28,7 +28,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "cross-env": "^5.0.5",
     "css-loader": "^3.2.0",
-    "dotenv": "^8.2.0",
     "eslint": "^6.7.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-flowtype": "^4.5.2",
@@ -56,8 +55,9 @@
     "lint": "eslint --ext .js --ignore-pattern \"**/*.test.js\" {components,state,views}/**/* ",
     "test": "echo \"Error: no test specified\"",
     "dev": "webpack-dev-server --config ./configs/webpack.config.js",
-    "build": "webpack --mode production --config ./configs/webpack.config.js",
-    "start": "http-server build"
+    "build": "webpack --mode development --config ./configs/webpack.config.js",
+    "start": "http-server build",
+    "emulate": "cd functions && npm run build & cd ../ && npm run build && firebase emulators:start"
   },
   "author": "Patrick Tisdel",
   "license": "UNLICENSED"

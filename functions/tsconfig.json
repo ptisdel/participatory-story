@@ -6,7 +6,7 @@
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "noUnusedLocals": false,
-    "outDir": "lib",
+    "outDir": "build",
     "sourceMap": true,
     "strict": true,
     "target": "es2017"

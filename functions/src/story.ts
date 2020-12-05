@@ -2,12 +2,9 @@ import _ from 'lodash';
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
-admin.initializeApp();
-
 export const notifyOnNewEntry = functions.database
   .ref('/stories/{storyId}/sections/{sectionId}/entries/{entryId}')
   .onCreate(async (snapshot, context) => {
-
     const storyId = context.params.storyId;
 
     // create notification payload
@@ -33,6 +30,11 @@ export const notifyOnNewEntry = functions.database
       if (authorId === userId) return acc;
       return [...acc, token];
     }, [] as any);
+
+    if (notificationTokens.length === 0) {
+      console.log('No one to update');
+      return;
+    }
 
     await admin.messaging().sendToDevice(notificationTokens, payload);
   })

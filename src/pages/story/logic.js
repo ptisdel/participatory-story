@@ -48,14 +48,9 @@ export const useStory = () => {
   const onSubmit = async e => {
     e.preventDefault();
     if (inputValue !== '') {
-      await submitRequest({ currentSection, storyId, text: inputValue })
-        .then(() => {
-          setInputValue('');
-          setError(null);
-        })
-        .catch(err => {
-          setError(`Error ${err.code}: ${err.message}`);
-        });
+      submitRequest({ currentSection, storyId, text: inputValue });
+      setInputValue('');
+      setError(null);      
     }
   };
 
