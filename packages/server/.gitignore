@@ -1,0 +1,3 @@
+node_modules
+configs/firebase-admin-private-key.json
+configs/config.json

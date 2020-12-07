@@ -1,0 +1,16 @@
+{
+  "name": "@interactive-story/server",
+  "version": "0.1.0",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "firebase-admin": "^9.4.1"
+  },
+  "main": "entry.js",
+  "scripts": {
+    "dev": "node --trace-warnings entry.js"
+  },
+  "repository": "https://github.com/ptisdel/participatory-story.git"
+}

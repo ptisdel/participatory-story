@@ -1,0 +1,27 @@
+{
+  "name": "@interactive-story/client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "firebase": "^8.1.1",
+    "lodash-es": "^4.17.15",
+    "moment": "^2.29.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-query": "^2.26.3",
+    "react-router-dom": "^5.2.0"
+  },
+  "babel": {
+    "extends": "./configs/.babelrc"
+  },
+  "scripts": {
+    "lint": "eslint --ext .js --ignore-pattern \"**/*.test.js\" {components,state,views}/**/* ",
+    "test": "echo \"Error: no test specified\"",
+    "dev": "webpack-dev-server --config ./configs/webpack.config.js",
+    "build": "webpack --mode production --config ./configs/webpack.config.js",
+    "start": "http-server build"
+  },
+  "author": "Patrick Tisdel",
+  "license": "UNLICENSED"
+}
