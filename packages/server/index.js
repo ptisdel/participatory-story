@@ -10,6 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/api/stories', controllers.createStory);
+app.post('/api/stories/:storyId/entries', controllers.createEntry);
 
 app.get('*', function(req, res){
   res.send('kindly go away', 404);

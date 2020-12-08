@@ -1,11 +1,13 @@
 import _ from 'lodash-es';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useMutation } from 'react-query';
 import * as entities from '../../entities';
 import * as helpers from '../../helpers';
 
 const { useAuthentication } = helpers;
 const { useStory } = entities.story.api;
+const { create } = entities.entry.api;
 
 export const useStoryView = () => {
   const { storyId } = useParams();
@@ -22,6 +24,11 @@ export const useStoryView = () => {
     setInputValue('');
   }
 
+  // create entry
+  const [createEntry] = useMutation(create, {
+    onError: () => console.log('Oops!'),
+  });
+
   // form state
   const [inputValue, setInputValue] = useState('');
   const onInputValueChange = (e) => setInputValue(e.target.value)
@@ -31,7 +38,7 @@ export const useStoryView = () => {
   const onSubmit = async e => {
     e.preventDefault();
     if (inputValue !== '') {
-      submitRequest({ storyId, text: inputValue });
+      createEntry({ storyId, text: inputValue });
       setInputValue('');
       setError(null);      
     }

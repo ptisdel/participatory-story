@@ -16,7 +16,6 @@ const rootPath = 'stories';
 export const createUser = ({ email, password }) => auth.createUserWithEmailAndPassword(email, password);
 export const signIn = ({ email, password }) => auth.signInWithEmailAndPassword(email, password);
 export const signOut = () => auth.signOut();
-export const onAuthChanged = (callback) => auth.onAuthStateChanged(callback);
 export const getUser = () => auth.currentUser;
 export const subscribeToAuthChanges = callback => {
   // middleware to add userToken, which is async
@@ -76,21 +75,6 @@ export const subscribeToStory = ({ storyId, onUpdate }) => {
 };
 export const unsubscribeToStory = ({ storyId }) => db.ref(`${rootPath}/${storyId}`).off();
 
-// write to story
-export const submitRequest = async ({ storyId, text }) => {
-  // find latest section id
-  db.ref(`${rootPath}/${storyId}/sections`).orderByChild('timestamp').limitToLast(1).once('child_added')
-    .then(snapShot => {
-      if (!snapShot) return;
-      const latestSectionKey = snapShot.key;
-      const pathToCurrentSection = `${rootPath}/${storyId}/sections/${latestSectionKey}/entries`;
-      db.ref(pathToCurrentSection).push({
-        text: text,
-        timestamp: Date.now(),
-        authorId: getUser().uid,
-      });
-    }); 
-};
 
 // push notifications
 
