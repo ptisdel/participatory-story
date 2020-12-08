@@ -18,6 +18,22 @@ export const signIn = ({ email, password }) => auth.signInWithEmailAndPassword(e
 export const signOut = () => auth.signOut();
 export const onAuthChanged = (callback) => auth.onAuthStateChanged(callback);
 export const getUser = () => auth.currentUser;
+export const subscribeToAuthChanges = callback => {
+  // middleware to add userToken, which is async
+  const onAuthChange = async user => {
+    if (!user) callback(null);
+
+    callback({
+      userId: user.uid,
+      userDisplayName: user.displayName || 'User Display Name',
+      userToken: await user.getIdToken(),
+    });
+  };
+
+  // this subscription function returns its unsubscription function
+  const unsubscribeToAuthChanges = auth.onAuthStateChanged(onAuthChange);
+  return unsubscribeToAuthChanges;
+};
 
 // list stories
 const subscribeToStoryList = callback => db.ref(rootPath).on('value', snapShot => {

@@ -6,13 +6,8 @@ export const useLoginView = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const onChangeEmail = e => {
-    setEmail(e.target.value);
-  }
-
-  const onChangePassword = e => {
-    setPassword(e.target.value);
-  }
+  const onChangeEmail = e => setEmail(e.target.value);
+  const onChangePassword = e => setPassword(e.target.value);
 
   const logIn = async e => {
     e.preventDefault();

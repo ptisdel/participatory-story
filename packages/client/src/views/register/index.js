@@ -11,7 +11,7 @@ export const RegisterView = () => {
     register,
     onChangeEmail,
     onChangePassword,
-  }] = useRegister();
+  }] = useRegisterView();
   
   return (
     <div>

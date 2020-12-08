@@ -1,22 +1,16 @@
-import { useEffect, useState } from 'react';
-import { signOut, onAuthChanged } from '../services/firebase';
+import { signOut } from '../services/firebase';
 import { useHistory } from 'react-router-dom';
+import * as helpers from '../helpers';
+
+const { useAuthentication } = helpers;
 
 export const useApp = () => {
   const history = useHistory();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    // if auth state changes, change isAuthenticated
-    onAuthChanged((user) => {
-      if (user) {
-        setIsAuthenticated(true);
-        history.push('/')
-      } else {
-        setIsAuthenticated(false);
-        history.push('/login')
-      }
-    }), [history]});
+  const user = useAuthentication({
+    onLogin: () => history.push('/'),
+    onLogout: () => history.push('/login'),
+  })
 
   const logOut = () => {
     signOut().then(() => {
@@ -27,7 +21,7 @@ export const useApp = () => {
   }
 
   return [{
-    isAuthenticated,
+    isAuthenticated: Boolean(user),
   }, {
     logOut,
   }];

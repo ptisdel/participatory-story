@@ -2,9 +2,9 @@ import _ from 'lodash-es';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as entities from '../../entities';
-import { getUserId } from '../../helpers';
-import { submitRequest } from '../../services/firebase';
+import * as helpers from '../../helpers';
 
+const { useAuthentication } = helpers;
 const { useStory } = entities.story.api;
 
 export const useStoryView = () => {
@@ -15,7 +15,7 @@ export const useStoryView = () => {
 
   // get notification settings
   const [isSubscribedToNotifications, setIsSubscribedToNotifications] = useState(false);
-  const userId = getUserId();
+  const user = useAuthentication();
 
   // input functions
   const onClear = () => {
@@ -44,7 +44,7 @@ export const useStoryView = () => {
     isSubscribedToNotifications,
     sections: story?.sections,
     storyAuthorId: story?.authorId,
-    userId,
+    userId: user?.userId,
   }, {
     onClear,
     onInputValueChange,

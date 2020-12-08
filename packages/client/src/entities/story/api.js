@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { firebaseServices } from '../../services/firebase';
-import { getUserToken } from '../../helpers';
+import { getAuthentication } from '../../helpers';
 
 create.queryKey = 'createStory';
 export async function create({ description, name, playerCount }) {
-    const userToken = await getUserToken();
+    const { userToken } = await getAuthentication();
     if (!userToken) throw new Error('Not logged in! Cannot create story.');
 
     const data = { 
