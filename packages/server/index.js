@@ -12,6 +12,8 @@ app.use(bodyParser.json());
 app.post('/api/stories', controllers.createStory);
 app.post('/api/stories/:storyId/entries', controllers.createEntry);
 
+app.patch('/api/stories/:storyId/players', controllers.modifyPlayers);
+
 app.get('*', function(req, res){
   res.send('kindly go away', 404);
 });

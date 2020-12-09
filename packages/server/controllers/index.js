@@ -1,2 +1,2 @@
 export { createEntry } from './entry-controller';
-export { createStory } from './story-controller';
+export { createStory, modifyPlayers } from './story-controller';

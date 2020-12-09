@@ -1,28 +1,45 @@
 import _ from 'lodash-es';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useMutation } from 'react-query';
 import * as helpers from '../../helpers';
 import * as entities from '../../entities';
 
 const { useAuthentication } = helpers;
-const { useStory } = entities.story.api;
+const { join, useStory } = entities.story.api;
+const { useEntries } = entities.entry.api;
 
 export const useStoryView = () => {
   const { storyId } = useParams();
 
-  // fetch story
-  const { isLoading, story } = useStory({ storyId });
+  // fetch story and entries
+  const { isLoading: isStoryLoading, story } = useStory({ storyId });
+  const { isLoading: isEntriesLoading, entries } = useEntries({ storyId });
 
   // get notification settings
   const [isSubscribedToNotifications, setIsSubscribedToNotifications] = useState(false);
   const { user } = useAuthentication();
 
+  // join story
+  const [joinStory, { isLoading }] = useMutation(join, {
+    onError: () => console.log('Oops!'),
+    onSuccess: () => console.log('Joined story!'),
+  });
+
+  const onJoinStory = () => {
+    joinStory({
+      storyId,
+    });
+  };
+
   return [{
-    isLoading,
+    isLoading: isStoryLoading || isEntriesLoading,
     isSubscribedToNotifications,
-    sections: story?.sections,
+    entries,
     storyAuthorId: story?.authorId,
     userId: user?.userId,
+    userIsMember: story?.userIsMember,
   }, {
+    onJoinStory,
   }];
 }

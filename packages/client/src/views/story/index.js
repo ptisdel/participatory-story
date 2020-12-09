@@ -6,16 +6,14 @@ import { EntryPad } from './components';
 
 export const StoryView = () => {
   const [{
-    inputValue,
     isLoading,
     isSubscribedToNotifications,
-    sections,
+    entries,
     storyAuthorId,
     userId,
+    userIsMember,
   }, {
-    onClear, 
-    onInputValueChange,
-    onSubmit,
+    onJoinStory,
   }] = useStoryView();
 
   const userIsAuthor = (storyAuthorId === userId);
@@ -24,7 +22,9 @@ export const StoryView = () => {
   );
 
   const renderEntry = (entry, entryKey) => {
-    const { authorId, timestamp, text } = entry;
+    const { authorId, timestamp, text, type } = entry;
+
+    // TODO: differentiate between entry types (eg., section headers, paragraphs)
 
     const isSelfEntry = authorId === userId;
     const isStoryEntry = authorId === storyAuthorId;
@@ -48,20 +48,12 @@ export const StoryView = () => {
     return null;
   };
 
-  const renderSection = (section, sectionKey) => {
-      return (
-        <div className='section' key={sectionKey}>
-          <h2>{section.name}</h2>
-          { _.map(section.entries, (entry, entryKey) => renderEntry(entry, entryKey)) }
-        </div>
-      );
-  };
-
   const Content = () => (
     <div>
-      { userIsAuthor ? <div className='author-banner'>This is your story.</div> : null }
+      { !userIsMember ? <div className='join-banner'><button onClick={onJoinStory}>Join this story</button></div> : null }
+      { userIsAuthor ? <div className='author-banner'>You are writing this story.</div> : null }
       <div id='story-container'>
-        { _.map(sections, (section, sectionKey) => renderSection(section, sectionKey)) }
+        { _.map(entries, (entry, entryKey) => renderEntry(entry, entryKey)) }
       </div>
     </div>    
   )
@@ -72,7 +64,7 @@ export const StoryView = () => {
           ? <LoadingContent/>
           : <div>
               <Content/>
-              <EntryPad/>
+              { userIsMember ? <EntryPad/> : null }
             </div>
       }
     </div>

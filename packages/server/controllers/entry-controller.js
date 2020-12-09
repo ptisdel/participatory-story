@@ -1,39 +1,38 @@
 import _ from 'lodash-es';
+import * as constants from '../constants';
 import * as services from '../services';
 import * as helpers from '../helpers';
+
+const { PATHS } = constants;
 
 const { getUserFromRequest } = helpers;
 const { db } = services.firebaseAdmin;
 
-const rootPath = 'stories';
-
 export const createEntry = async (req, res) => {
     const user = await getUserFromRequest(req);
-    console.log(user);
     if (!user) return res.status(403).json({ error: 'Invalid credentials, friend!' });
-  
+    const userId = user.uid;
+
     // get new entry data
-    const { text } = req.body;
+    const { type, text } = req.body;
     const { storyId } = req.params;
   
-    // verify user belongs to the story
-    const authorRef = await db.ref(`${rootPath}/${storyId}/author`).once('value');
-    const author = authorRef.val();
-    const storyUsersRef = await db.ref(`${rootPath}/${storyId}/players`).once('value');
-    const storyUsers = storyUsersRef.val();
-    const userId = user.uid;
-    const userCanPost = (
-        userId === author.id
-        || _.some(storyUsers, user => (user.playerId === userId))
-    );
-    if (!userCanPost) return res.status(403).json({ error: 'Invalid credentials, friend!' });
+    // check if user is author
+    const authorSnapshot = await db.ref(`${PATHS.stories}/${storyId}/author`).once('value');
+    const author = authorSnapshot.val();
+    const isAuthor = (userId === author.id);
 
-    const currentSectionRef = await db.ref(`${rootPath}/${storyId}/currentSection`).once('value');
-    const currentSection = currentSectionRef.val();
+    // check if user is a player
+    const playersSnapshot = await db.ref(`${PATHS.stories}/${storyId}/players`).once('value');
+    const players = playersSnapshot.exists() ? playersSnapshot.val() : {};
+    const isPlayer = _.some(players, (player, playerId) => (userId === playerId));
 
-    const newEntryRef = await db.ref(`${rootPath}/${storyId}/sections/${currentSection}/entries`).push({
-        text: text,
+    if (!isAuthor && !isPlayer) return res.status(403).json({ error: 'Invalid credentials, friend!' });
+
+    const newEntryRef = await db.ref(`${PATHS.entries}/${storyId}`).push({
+        text,
         timestamp: Date.now(),
+        type,
         authorId: userId,
     });
 

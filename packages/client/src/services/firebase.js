@@ -1,16 +1,17 @@
 import _ from 'lodash-es';
 import firebase from 'firebase';
 import config from '../../configs/config.json';
+import * as constants from '../constants';
 
 const { firebaseAppConfig, firebaseVapidKey } = config;
+const { PATHS } = constants;
 
 // TODO: Move all of this behind a server
 
 // initialize firebase
 firebase.initializeApp(firebaseAppConfig); 
 const auth = firebase.auth();
-const db = firebase.database();  
-const rootPath = 'stories';
+const db = firebase.database();
 
 // authentication helpers
 export const createUser = ({ email, password }) => auth.createUserWithEmailAndPassword(email, password);
@@ -35,14 +36,12 @@ export const subscribeToAuthChanges = callback => {
 };
 
 // list stories
-const subscribeToStoryList = callback => db.ref(rootPath).on('value', snapShot => {
+const subscribeToStoryList = callback => db.ref(PATHS.stories).on('value', async snapShot => {
   const storyData = snapShot.val();
 
   const storiesFormatted = _.map(storyData, (story, key) => ({
-    author: {
-      id: story.author?.id,
-      name: story.author?.publicName,
-    },
+    authorId: story.author.id,
+    authorName: story.author.name,
     description: story.description,
     id: key,
     maxPlayerCount: story.maxPlayerCount,
@@ -51,29 +50,42 @@ const subscribeToStoryList = callback => db.ref(rootPath).on('value', snapShot =
     playerCount: story.players?.length || 0,
   }));
 
-  const openStories = _.filter(storiesFormatted, story => 
-    (story.open === true && story.maxPlayerCount > story.playerCount)
-  );
-  callback(openStories);
+  // TODO: filter what stories are shown by whether they have slots open
+  // OR user already belongs to them
+
+  // const openStories = _.filter(storiesFormatted, story => 
+  //   (story.open === true && story.maxPlayerCount > story.playerCount)
+  // );
+  callback(storiesFormatted);
 });
-const unsubscribeToStoryList = () => db.ref(rootPath).off();
+const unsubscribeToStoryList = () => db.ref(PATHS.stories).off();
 
-
-// download any story updates and notify user of them
 export const subscribeToStory = ({ storyId, onUpdate }) => {
-  db.ref(`${rootPath}/${storyId}`).on('value', (snapShot) => {
+  db.ref(`${PATHS.stories}/${storyId}`).on('value', snapShot => {
     const story = snapShot.val();
-    const authorId = story?.author?.id;
-    const currentSection = story?.currentSection;
-    const sections = story?.sections;
+    const userId = getUser().uid;
+
+    const userIsMember = (
+      userId === story.author.id
+        || _.some(story.players, (player, playerId) => (userId === playerId))
+    );
 
     onUpdate({
-      authorId,
-      sections,
+      authorId: story.author.id,
+      userIsMember,
     });
   });
 };
-export const unsubscribeToStory = ({ storyId }) => db.ref(`${rootPath}/${storyId}`).off();
+export const unsubscribeToStory = ({ storyId }) => db.ref(`${PATHS.stories}/${storyId}`).off();
+
+export const subscribeToEntries = ({ storyId, onUpdate }) => {
+  db.ref(`${PATHS.entries}/${storyId}`).on('value', (snapShot) => {
+    const entries = snapShot.val();
+
+    onUpdate(entries);
+  });
+};
+export const unsubscribeToEntries = ({ storyId }) => db.ref(`${PATHS.entries}/${storyId}`).off();
 
 
 // push notifications
@@ -114,4 +126,8 @@ export const firebaseServices = {
     subscribe: subscribeToStory,
     unsubscribe: unsubscribeToStory,
   },
+  entries: {
+    subscribe: subscribeToEntries,
+    unsubscribe: unsubscribeToEntries,
+  }
 };

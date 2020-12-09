@@ -45,7 +45,7 @@ export const HomeView = () => {
                   </div>
                 </div>
                 <div className='story-meta-info'>
-                  <div className='story-author'>{story.author.name}</div>
+                  <div className='story-author'>{story.authorName}</div>
                 </div>
               </div>
               { (i < stories.length - 1) ? <div className='story-divider'></div> : null }

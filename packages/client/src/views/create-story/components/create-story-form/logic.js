@@ -2,11 +2,11 @@ import _ from 'lodash-es';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import * as entities from '../../entities';
+import * as entities from '../../../../entities';
 
 const { create } = entities.story.api;
 
-export const useCreateStoryView = () => {
+export const useCreateStoryForm = () => {
   // name and description
   const [storyName, setStoryName] = useState('');
   const [storyDescription, setStoryDescription] = useState('');
@@ -46,7 +46,6 @@ export const useCreateStoryView = () => {
   }
 
   return [{
-    isLoading,
     playerCount,
     playerCountOptions,
     storyDescription,
