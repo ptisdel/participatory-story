@@ -22,7 +22,7 @@ export const useCreateStoryView = () => {
 
   // create story
   const history = useHistory();
-  const [createStory] = useMutation(create, {
+  const [createStory, { isLoading }] = useMutation(create, {
     onError: () => console.log('Oops!'),
     onSuccess: storyId => {
       if (storyId) history.push(`/story/${storyId}`);
@@ -46,6 +46,7 @@ export const useCreateStoryView = () => {
   }
 
   return [{
+    isLoading,
     playerCount,
     playerCountOptions,
     storyDescription,

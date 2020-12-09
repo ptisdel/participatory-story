@@ -2,20 +2,20 @@ import _ from 'lodash-es';
 import moment from 'moment';
 import React from 'react';
 import { useStoryView } from './logic';
+import { EntryPad } from './components';
 
 export const StoryView = () => {
   const [{
-    error,
     inputValue,
     isLoading,
     isSubscribedToNotifications,
     sections,
     storyAuthorId,
-    userId
+    userId,
   }, {
     onClear, 
     onInputValueChange,
-    onSubmit
+    onSubmit,
   }] = useStoryView();
 
   const LoadingContent = () => (
@@ -56,23 +56,24 @@ export const StoryView = () => {
       );
   };
 
+  const Content = () => (
+    <div>
   return (
-    <div id='story-container'>
+      <div id='story-container'>
+        { _.map(sections, (section, sectionKey) => renderSection(section, sectionKey)) }
+      </div>
+    </div>    
+  )
+
+  return (
+    <div>
       { isLoading
           ? <LoadingContent/>
-          : _.map(sections, (section, sectionKey) => renderSection(section, sectionKey)) }
-      { error ? <p id='error'>{error}</p> : null }
-      <form id='entrypad' onSubmit={onSubmit}>
-        <div id='input-field-wrapper'>
-          <input id='input-field' placeholder='Type your request here' onChange={onInputValueChange} value={inputValue} ></input>
-          <button className={ (inputValue !== '') ? 'visible' : ''} id='input-field-clear-button' onClick={onClear}>
-            <i className="fas fa-times"></i>
-          </button>
-        </div>
-        <button className={ (inputValue !== '') ? 'active' : ''} id='submit-button' type='submit'>  
-          <i className='fab fa-telegram-plane' id='submit-button-icon'></i>
-        </button>
-      </form>
+          : <div>
+              <Content/>
+              <EntryPad/>
+            </div>
+      }
     </div>
   );
 }

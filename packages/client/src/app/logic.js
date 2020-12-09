@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { signOut } from '../services/firebase';
 import { useHistory } from 'react-router-dom';
 import * as helpers from '../helpers';
@@ -7,7 +8,7 @@ const { useAuthentication } = helpers;
 export const useApp = () => {
   const history = useHistory();
 
-  const user = useAuthentication({
+  const { isInitializing, user } = useAuthentication({
     onLogin: () => history.push('/'),
     onLogout: () => history.push('/login'),
   })
@@ -22,6 +23,7 @@ export const useApp = () => {
 
   return [{
     isAuthenticated: Boolean(user),
+    isLoading: isInitializing,
   }, {
     logOut,
   }];

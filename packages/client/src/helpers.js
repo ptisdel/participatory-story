@@ -14,9 +14,11 @@ export const getAuthentication = async () => {
 
 export const useAuthentication = ({ onLogin = _.noop, onLogout = _.noop } = {}) => {
   const [user, setUser] = useState(null);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
     const unsubscribe = subscribeToAuthChanges(user => {
+      setIsInitializing(false);
       if (user) {
         setUser({
           userId: user.userId, 
@@ -33,5 +35,5 @@ export const useAuthentication = ({ onLogin = _.noop, onLogout = _.noop } = {}) 
     return unsubscribe;
   }, []);
 
-  return user;
+  return { user, isInitializing };
 }
