@@ -18,6 +18,7 @@ export const StoryView = () => {
     onSubmit,
   }] = useStoryView();
 
+  const userIsAuthor = (storyAuthorId === userId);
   const LoadingContent = () => (
     <div>Loading...</div>
   );
@@ -58,7 +59,7 @@ export const StoryView = () => {
 
   const Content = () => (
     <div>
-  return (
+      { userIsAuthor ? <div className='author-banner'>This is your story.</div> : null }
       <div id='story-container'>
         { _.map(sections, (section, sectionKey) => renderSection(section, sectionKey)) }
       </div>

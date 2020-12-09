@@ -28,7 +28,6 @@ a {
 nav {
   background: #217763;
   padding: 15px 40px;
-  display: fixed;
 }
 
 nav ul {
@@ -166,6 +165,12 @@ nav ul li {
 
 
 /* STORY STYLES */
+
+.author-banner {
+  background: white;
+  padding: 8px;
+  text-align: center;
+}
 
 .entry {
   margin-bottom: 1em;
