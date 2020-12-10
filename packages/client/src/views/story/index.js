@@ -10,6 +10,7 @@ export const StoryView = () => {
     isSubscribedToNotifications,
     entries,
     storyAuthorId,
+    storyName,
     userId,
     userIsMember,
   }, {
@@ -48,6 +49,13 @@ export const StoryView = () => {
     return null;
   };
 
+  const Header = () => (
+    <div className='story-header'>
+      <h1>{ storyName }</h1>
+      <button className='story-options-button'><i className="fas fa-cog"></i></button>
+    </div>
+  )
+
   const Content = () => (
     <div>
       { !userIsMember ? <div className='join-banner'><button onClick={onJoinStory}>Join this story</button></div> : null }
@@ -63,6 +71,7 @@ export const StoryView = () => {
       { isLoading
           ? <LoadingContent/>
           : <div>
+              <Header/>
               <Content/>
               { userIsMember ? <EntryPad/> : null }
             </div>

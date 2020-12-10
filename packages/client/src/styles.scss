@@ -28,15 +28,15 @@ a {
 nav {
   background: #217763;
   padding: 15px 40px;
-}
 
-nav ul {
-  display: flex;
-  list-style-type: none;
-}
+  ul {
+    display: flex;
+    list-style-type: none;
 
-nav ul li {
-  margin-right: 15px;
+    li {
+      margin-right: 15px;
+    }
+  }
 }
 
 #page-layout {
@@ -60,16 +60,15 @@ nav ul li {
   padding: 22px 18px;
   transition: all 0.1s;
   width: 100%;
-}
 
-.story:hover {
-  background: white;
-  /* transform: translate(-4px, -0px); */
-  transform: scale(1.02);
-}
+  &:hover {
+    background: white;
+    transform: scale(1.02);
 
-.story:hover .story-title {
-  color: black;
+    .story-title {
+      color: black;
+    }
+  }
 }
 
 .story-icon-circle {
@@ -82,11 +81,11 @@ nav ul li {
   justify-content: center;
   margin-right: 15px;
   width: 30px;
-}
 
-.story-icon {
-  color: #9e5e5e;
-  font-size: 12px;
+  .story-icon {
+    color: #9e5e5e;
+    font-size: 12px;
+  }
 }
 
 .story-main-info {
@@ -127,8 +126,14 @@ nav ul li {
 }
 
 #story-container {
-  padding: 20px;
+  background: white;
+  box-shadow: 2px 2px 15px rgba(0,0,0,0.1);
+  padding: 40px;
+  margin: auto;
+  max-width: 700px;
+  min-height: 500px;
   top: 40px;
+  width: 100%;
 }
 
 .story-divider {
@@ -136,7 +141,6 @@ nav ul li {
   margin-bottom: 15px;
   width: 100%;
 }
-
 
 #new-story-button {
   background: linear-gradient(45deg, #36a0bf, #36bf99);
@@ -152,19 +156,52 @@ nav ul li {
   width: 60px;
   right: 0;
   transition: all 0.1s;
-}
 
-#new-story-button:hover {
-  transform: scale(1.1);
-}
+  &:hover {
+    transform: scale(1.1);
+  }  
 
-#new-story-button i {
-  color: white;
-  font-size: 24px;
+  i {
+    color: white;
+    font-size: 24px;
+  }  
 }
 
 
 /* STORY STYLES */
+
+.story-header {
+  align-items: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  padding: 20px 20px 20px 30px;
+
+  h1 {
+    margin: 0;
+  }  
+
+  .story-options-button {
+    background: none;
+    border: none;
+    border-radius: 10px;
+    color: gray;
+    cursor: pointer;
+    font-size: 25px;
+    line-height: 1em;
+    outline: none;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      color: #555555;
+      transform: rotate(100deg);
+    }
+  }
+}
 
 .author-banner {
   background: white;
@@ -179,7 +216,6 @@ nav ul li {
 .timestamp {
   font-size: 12px;
   color: #94a9a2;
-  
 }
 
 .self-entry {
@@ -187,11 +223,12 @@ nav ul li {
   border-radius: 5px;
   color: #2d6f69;
   padding: 10px;
+
+  .timestamp {
+    color: #549292;
+  }
 }
 
-.self-entry .timestamp {
-  color: #549292;
-}
 
 .self-entry-icon {
   font-size: 0.8em;
@@ -207,12 +244,54 @@ nav ul li {
   padding: 1em;
   position: fixed;
   width: 100%;
-}
 
-#entrypad #input-field-wrapper {
-  flex: 1;
-  margin-right: 20px;
-  position: relative;
+  #input-field-wrapper {
+    flex: 1;
+    margin-right: 20px;
+    position: relative;
+  }
+
+  #input-field {
+    background: none;
+    border: 2px solid #d6d6d6;
+    border-width: 0px 0px 2px 0px;
+    outline: none;
+    padding: 2px;
+    width: 100%;
+
+    &:focus {
+      border-color: #36adaf;
+    }
+  }
+
+  #submit-button {
+    align-items: center;
+    background: #a7a7a7;
+    border: 0;
+    border-radius: 50%;
+    display: flex;
+    height: 45px;
+    justify-content: center;
+    outline: none;
+    transform: scale(0.9);
+    transition: all 0.1s;
+    width: 45px;
+
+    &.active {
+      background: linear-gradient(45deg, #36a0bf, #36bf99);
+      cursor: pointer;
+      transform: scale(1);
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    #submit-button-icon{
+      color: white;
+      font-size: 24px;
+    }    
+  }
 }
 
 #input-field-clear-button {
@@ -229,62 +308,19 @@ nav ul li {
   right: 0;
   top: 0;
   width: 20px;
-}
 
-#input-field-clear-button.visible {
-  display: flex;
-}
+  i {
+    color: #929292;
+  }
 
-#input-field-clear-button i {
-  color: #929292;
-}
+  &:hover i {
+    color: black;
+  }
 
-#input-field-clear-button:hover i {
-  color: black;
+  &.visible {
+    display: flex;
+  }  
 }
-
-#entrypad #input-field {
-  background: none;
-  border: 2px solid #d6d6d6;
-  border-width: 0px 0px 2px 0px;
-  outline: none;
-  padding: 2px;
-  width: 100%;
-}
-
-#entrypad #input-field:focus {
-  border-color: #36adaf;
-}
-
-#entrypad #submit-button {
-  align-items: center;
-  background: #a7a7a7;
-  border: 0;
-  border-radius: 50%;
-  display: flex;
-  height: 45px;
-  justify-content: center;
-  outline: none;
-  transform: scale(0.9);
-  transition: all 0.1s;
-  width: 45px;
-}
-
-#entrypad #submit-button.active {
-  background: linear-gradient(45deg, #36a0bf, #36bf99);
-  cursor: pointer;
-  transform: scale(1);
-}
-
-#entrypad #submit-button.active:hover {
-  transform: scale(1.1);
-}
-
-#entrypad #submit-button #submit-button-icon{
-  color: white;
-  font-size: 24px;
-}
-
 
 /* CREATE STORY STYLES */
 
@@ -306,23 +342,23 @@ nav ul li {
   margin-right: 10px;
   width: 30px;
   cursor: pointer;
+
+  .selected {
+    background: gray;
+    color: white;
+
+    &:hover {
+      background: lightgray;
+    }    
+  }
+
+  &:hover {
+    background: lightgray;
+  }  
 }
 
 #player-count-options-label {
   margin-right: 10px;
-}
-
-.player-count-option:hover {
-  background: lightgray;
-}
-
-.player-count-option.selected {
-  background: gray;
-  color: white;
-}
-
-.player-count-option.selected:hover {
-  background: lightgray;
 }
 
 
@@ -336,31 +372,31 @@ nav ul li {
   padding: 20px;
   max-width: 600px;
   width: 100%;
-}
 
-.form-card h1 {
-  color: #057f6a;
-  line-height: 1em;
-  margin-bottom: 20px;
-}
+  h1 {
+    color: #057f6a;
+    line-height: 1em;
+    margin-bottom: 20px;
+  }
+  
+  input {
+    background: #e8e8e8;
+    border: 0;
+    border-radius: 3px;
+    display: block;
+    line-height: 1em;
+    margin-bottom: 20px;
+    padding: 4px;
+    width: 100%;
+  }  
 
-.form-card input {
-  background: #e8e8e8;
-  border: 0;
-  border-radius: 3px;
-  display: block;
-  line-height: 1em;
-  margin-bottom: 20px;
-  padding: 4px;
-  width: 100%;
-}
-
-.form-card button {
-  background: linear-gradient(45deg, #36a0bf, #36bf99);
-  border-radius: 5px;
-  border: 0;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  padding: 7px 10px;
+  button {
+    background: linear-gradient(45deg, #36a0bf, #36bf99);
+    border-radius: 5px;
+    border: 0;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 7px 10px;
+  }
 }

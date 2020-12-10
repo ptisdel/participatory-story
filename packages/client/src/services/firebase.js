@@ -72,6 +72,8 @@ export const subscribeToStory = ({ storyId, onUpdate }) => {
 
     onUpdate({
       authorId: story.author.id,
+      description: story.description,
+      name: story.name,
       userIsMember,
     });
   });

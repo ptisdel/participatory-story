@@ -4,7 +4,7 @@ import { QueryCache, ReactQueryCacheProvider } from 'react-query'
 import { BrowserRouter as Router } from 'react-router-dom';
 import { App } from './app';
 import './normalize.css';
-import './styles.css';
+import './styles.scss';
 
 const queryCache = new QueryCache()
 
