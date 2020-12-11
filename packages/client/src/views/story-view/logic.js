@@ -37,8 +37,8 @@ export const useStoryView = () => {
     isSubscribedToNotifications,
     entries,
     storyName: story?.name,
-    userId: user?.userId,
-    userIsAuthor: user?.userIsAuthor,
+    userId: user?.id,
+    userIsAuthor: story?.userIsAuthor,
     userIsPlayer: story?.userIsPlayer,
   }, {
     onJoinStory,

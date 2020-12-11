@@ -1,11 +1,11 @@
 import _ from 'lodash-es';
 import React from 'react';
 
-import { useEntryPad } from './logic';
+import { useAuthorEntryPad } from './logic';
 
-export const EntryPad = () => {
+export const AuthorEntryPad = () => {
 
-    const [data, handlers] = useEntryPad();
+    const [data, handlers] = useAuthorEntryPad();
 
     return (
         <form id='entrypad' onSubmit={handlers.onSubmit}>

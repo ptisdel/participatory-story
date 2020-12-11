@@ -6,8 +6,9 @@ export const getAuthentication = async () => {
   const user = await getUser();
   
   return {
-    isAuthenticated: Boolean(user),
-    userId: user?.uid,
+    displayName: user?.displayName,
+    email: user?.email,
+    id: user?.uid,
     userToken: await user?.getIdToken(),
   };
 }
@@ -24,9 +25,10 @@ export const useAuthentication = ({ onLogin = _.noop, onLogout = _.noop } = {}) 
       setIsInitializing(false);
       if (user) {
         setUser({
-          userId: user.userId, 
+          displayName: user.displayName,
+          email: user.email,
+          id: user.userId, 
           userToken: user.userToken,
-          userDisplayName: user.displayName,
         });
         onLogin();
       } else {

@@ -2,7 +2,7 @@ import _ from 'lodash-es';
 import moment from 'moment';
 import React from 'react';
 import { useStoryView } from './logic';
-import { EntryPad } from './components';
+import { AuthorEntryPad, PlayerEntryPad } from './components';
 
 export const StoryView = () => {
   const [{
@@ -63,28 +63,45 @@ export const StoryView = () => {
       <h1>{ storyName }</h1>
       <button className='story-options-button'><i className="fas fa-cog"></i></button>
     </div>
+  );
+
+  const AuthorContent = () => (
+    <div id='author-story-container'>
+      { _.map(entries, (entry, entryKey) => renderEntry(entry, entryKey)) }
+    </div>
+  );
+
+  const PlayerContent = () => (
+    <div id='player-story-container'>
+      { _.map(entries, (entry, entryKey) => renderEntry(entry, entryKey)) }
+    </div>
+  );
+
+  if (isLoading) return <LoadingContent/>;
+
+  if (userIsAuthor) return (
+    <div id='page-layout'>
+        <div className='author-banner'>You are writing this story.</div>
+        <Header/>
+        <AuthorContent/>
+        <AuthorEntryPad/>
+    </div>
   )
 
-  const Content = () => (
-    <div>
-      { !userIsPlayer && !userIsAuthor ? <div className='join-banner'><button onClick={onJoinStory}>Join this story</button></div> : null }
-      { userIsAuthor ? <div className='author-banner'>You are writing this story.</div> : null }
-      <div id='story-container'>
-        { _.map(entries, (entry, entryKey) => renderEntry(entry, entryKey)) }
-      </div>
-    </div>    
+  if (userIsPlayer) return (
+    <div id='page-layout'>
+        <Header/>
+        <PlayerContent/>
+        <PlayerEntryPad/>
+    </div>
   )
 
+  // user is non-member
   return (
-    <div>
-      { isLoading
-          ? <LoadingContent/>
-          : <div>
-              <Header/>
-              <Content/>
-              { (userIsPlayer || userIsAuthor) ? <EntryPad/> : null }
-            </div>
-      }
+    <div id='page-layout'>
+        <div className='join-banner'><button onClick={onJoinStory}>Join this story</button></div>
+        <Header/>
+        <AuthorEntryPad/>
     </div>
   );
 }

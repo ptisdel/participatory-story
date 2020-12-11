@@ -6,7 +6,7 @@ import * as entities from '../../../../entities';
 
 const { create } = entities.entry.api;
 
-export const useEntryPad = () => {
+export const useAuthorEntryPad = () => {
     const { storyId } = useParams();
 
     // form state

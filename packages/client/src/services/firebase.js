@@ -24,8 +24,9 @@ export const subscribeToAuthChanges = callback => {
     if (!user) callback(null);
 
     callback({
-      userId: user.uid,
-      userDisplayName: user.displayName || 'User Display Name',
+      email: user.email,
+      id: user.uid,
+      displayName: user.displayName || 'User Display Name',
       userToken: await user.getIdToken(),
     });
   };
