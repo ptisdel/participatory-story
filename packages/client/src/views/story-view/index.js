@@ -9,37 +9,46 @@ export const StoryView = () => {
     isLoading,
     isSubscribedToNotifications,
     entries,
-    storyAuthorId,
     storyName,
     userId,
-    userIsMember,
+    userIsAuthor,
+    userIsPlayer,
   }, {
     onJoinStory,
   }] = useStoryView();
 
-  const userIsAuthor = (storyAuthorId === userId);
   const LoadingContent = () => (
     <div>Loading...</div>
   );
 
   const renderEntry = (entry, entryKey) => {
-    const { authorId, timestamp, text, type } = entry;
+    const { authorId: entryAuthorId, authorName: entryAuthorName, timestamp, text, type } = entry;
 
     // TODO: differentiate between entry types (eg., section headers, paragraphs)
 
-    const isSelfEntry = authorId === userId;
-    const isStoryEntry = authorId === storyAuthorId;
+    const entryType = (() => {
+      if (userIsAuthor && entryAuthorId !== userId) return 'playerEntry';
+      if (userIsPlayer && entryAuthorId !== userId) return 'playerSelfEntry'
+      return 'authorEntry';
+    })();
 
     const timestampFormatted = moment(timestamp).fromNow();
 
-    if (isSelfEntry) return (
+    if (entryType === 'playerEntry') return (
+      <div className='entry self-entry' key={entryKey}>
+        <p><i className='fas fa-share self-entry-icon'></i> { text }</p>
+        <div className='timestamp'>{_.upperCase(entryAuthorName)} responded {timestampFormatted}</div>
+      </div>
+    );
+
+    if (entryType === 'playerSelfEntry') return (
       <div className='entry self-entry' key={entryKey}>
         <p><i className='fas fa-share self-entry-icon'></i> { text }</p>
         <div className='timestamp'>You responded {timestampFormatted}</div>
       </div>
     );
 
-    if (isStoryEntry) return (
+    if ('authorEntry') return (
       <div className='entry' key={entryKey}>
         <p>{ text }</p>
         <div className='timestamp'>{timestampFormatted}</div>
@@ -58,7 +67,7 @@ export const StoryView = () => {
 
   const Content = () => (
     <div>
-      { !userIsMember ? <div className='join-banner'><button onClick={onJoinStory}>Join this story</button></div> : null }
+      { !userIsPlayer && !userIsAuthor ? <div className='join-banner'><button onClick={onJoinStory}>Join this story</button></div> : null }
       { userIsAuthor ? <div className='author-banner'>You are writing this story.</div> : null }
       <div id='story-container'>
         { _.map(entries, (entry, entryKey) => renderEntry(entry, entryKey)) }
@@ -73,7 +82,7 @@ export const StoryView = () => {
           : <div>
               <Header/>
               <Content/>
-              { userIsMember ? <EntryPad/> : null }
+              { (userIsPlayer || userIsAuthor) ? <EntryPad/> : null }
             </div>
       }
     </div>

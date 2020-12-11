@@ -12,6 +12,7 @@ export const createEntry = async (req, res) => {
     const user = await getUserFromRequest(req);
     if (!user) return res.status(403).json({ error: 'Invalid credentials, friend!' });
     const userId = user.uid;
+    const userName = user.displayName || 'Player';
 
     // get new entry data
     const { type, text } = req.body;
@@ -34,6 +35,7 @@ export const createEntry = async (req, res) => {
         timestamp: Date.now(),
         type,
         authorId: userId,
+        authorName: userName,
     });
 
     const newEntryId = newEntryRef.key;

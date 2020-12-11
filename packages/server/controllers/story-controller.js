@@ -53,7 +53,7 @@ export const modifyPlayers = async (req, res) => {
     const playersSnapshot = await playersRef.once('value');
 
     if (playersSnapshot.exists()) {
-        const players = playersRef.val();
+        const players = playersSnapshot.val();
         const isAlreadyPlayer = _.some(players, (player, playerId) => (userId === playerId));
         if (isAlreadyPlayer) return res.status(403).json({ error: 'User is already a player.' });
     }

@@ -36,10 +36,10 @@ export const useStoryView = () => {
     isLoading: isStoryLoading || isEntriesLoading,
     isSubscribedToNotifications,
     entries,
-    storyAuthorId: story?.authorId,
     storyName: story?.name,
     userId: user?.userId,
-    userIsMember: story?.userIsMember,
+    userIsAuthor: user?.userIsAuthor,
+    userIsPlayer: story?.userIsPlayer,
   }, {
     onJoinStory,
   }];

@@ -65,16 +65,15 @@ export const subscribeToStory = ({ storyId, onUpdate }) => {
     const story = snapShot.val();
     const userId = getUser().uid;
 
-    const userIsMember = (
-      userId === story.author.id
-        || _.some(story.players, (player, playerId) => (userId === playerId))
-    );
+    const userIsPlayer = _.some(story.players, (player, playerId) => (userId === playerId));
+    const userIsAuthor = userId === story.author.id;
 
     onUpdate({
       authorId: story.author.id,
       description: story.description,
       name: story.name,
-      userIsMember,
+      userIsAuthor,
+      userIsPlayer,
     });
   });
 };
