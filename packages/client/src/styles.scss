@@ -1,9 +1,12 @@
 /* GLOBAL STYLES */
 
+* {
+  font-family: 'Nunito', sans-serif;
+}
+
 html {
   background: linear-gradient(0deg, white, #f3f3f3);
   color: gray;
-  font-family: 'Nunito', sans-serif;
   min-height: 100%;
 }
 
@@ -25,8 +28,10 @@ a {
 
 /* APP STYLES */
 
-nav {
-  background: #217763;
+#top-bar {
+  // background: #217763;
+  display: flex;
+  justify-content: space-between;
   padding: 15px 40px;
 
   ul {
@@ -35,6 +40,23 @@ nav {
 
     li {
       margin-right: 15px;
+    }
+  }
+
+  #top-bar-email {
+    align-items: center;
+    border: 0;
+    background-color: #36b2a8;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    outline: none;
+    padding: 10px 15px;
+    font-weight: 700;
+
+    i {
+      margin-left: 10px;
     }
   }
 }

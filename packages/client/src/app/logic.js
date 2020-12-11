@@ -13,7 +13,9 @@ export const useApp = () => {
     onLogout: () => history.push('/login'),
   })
 
-  const logOut = () => {
+  const onLogIn = () => history.push('/login');
+
+  const onLogOut = () => {
     signOut().then(() => {
       alert('Signed out!');
     }).catch(error => {
@@ -24,7 +26,9 @@ export const useApp = () => {
   return [{
     isAuthenticated: Boolean(user),
     isLoading: isInitializing,
+    userEmail: user?.email,
   }, {
-    logOut,
+    onLogIn,
+    onLogOut,
   }];
 }

@@ -17,13 +17,13 @@ import {
 import { useApp } from './logic';
 
 export const App = () => {
-  const [{ isAuthenticated, isLoading }, { logOut }] = useApp();
+  const [{ isAuthenticated, isLoading, userEmail }, { onLogIn, onLogOut }] = useApp();
 
   const AuthenticatedLinks = () => {
     if (!isAuthenticated) return null;
 
     return <>
-      <li><a href='' onClick={logOut}>Log Out</a></li>
+      <li><a href='' onClick={onLogOut}>Log Out</a></li>
     </>;
   }
 
@@ -38,6 +38,27 @@ export const App = () => {
 
   const LoadingContent = () => (
     <div>Loading...</div>
+  );
+
+  const TopBar = () => (
+    <div id='top-bar'>
+      <nav>
+        <ul>
+          <li><Link to='/'>Home</Link></li>
+          <UnauthenticatedLinks/>
+          <AuthenticatedLinks/>
+        </ul>
+      </nav>
+      {
+        isAuthenticated
+          ? <button id='top-bar-email' onClick={onLogOut}>
+              { userEmail } <i className="fas fa-sign-out-alt"></i>
+            </button>
+          : <button id='top-bar-email' onClick={onLogIn}>
+              Log In <i className="fas fa-sign-in-alt"></i>
+            </button>
+      }
+    </div>
   );
 
   const Pages = () => (
@@ -63,16 +84,17 @@ export const App = () => {
     </Switch>
   );
 
+  if (isLoading) return (
+    <>
+      <TopBar/>
+      <LoadingContent/>
+    </>
+  );
+
   return (
     <>
-      <nav>
-        <ul>
-          <li><Link to='/'>Home</Link></li>
-          <UnauthenticatedLinks/>
-          <AuthenticatedLinks/>
-        </ul>
-      </nav>
-      { isLoading ? <LoadingContent/> : <Pages/> }
+      <TopBar/>
+      <Pages/>
     </>
   );
 };
