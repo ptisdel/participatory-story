@@ -9,7 +9,7 @@ export const useHomeView = () => {
   const history = useHistory();
 
   const { isLoading, stories } = useStoryList();
-  const { user } = useAuthentication();
+  const { user } = useAuthentication(); 
 
   const onCreateStory = () => history.push('/create-story');
   const onLogIn = () => history.push('/login');

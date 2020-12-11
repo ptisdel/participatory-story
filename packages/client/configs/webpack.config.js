@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-// const WebpackPwaManifest = require('webpack-pwa-manifest')
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 const CopyPlugin = require('copy-webpack-plugin');
 
 const buildDir = path.join(__dirname, '../build');
@@ -70,15 +70,21 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: srcIndex,
     }),
-    // new WebpackPwaManifest({
-    //   filename: 'manifest.json',
-    //   name: 'My Progressive Web App',
-    //   short_name: 'MyPWA',
-    //   description: 'My awesome Progressive Web App!',
-    //   background_color: '#ffffff',
-    //   crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
-    //   icons: [],
-    // }),
+    new WebpackPwaManifest({
+      filename: 'manifest.json',
+      orientation: 'portrait',
+      name: 'Participatory Story',
+      short_name: 'Async DnD',
+      description: 'A webapp for async DnD-style story creation',
+      background_color: '#ffffff',
+      crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
+      icons: [{
+        destination: 'assets',
+        src: path.resolve('src/public/favicon.png'),
+        type: 'image/png',
+        size: '256x256'
+      }],
+    }),
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
